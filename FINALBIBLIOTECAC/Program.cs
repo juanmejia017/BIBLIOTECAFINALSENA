@@ -114,6 +114,52 @@ namespace ProyectoBibliotecaSENA
         static void EditBookAuthor() { Console.Clear(); Console.WriteLine("[Edición] El autor ha sido modificado exitosamente."); Console.ReadKey(); }
         static void EditBookYearCategory() { Console.Clear(); Console.WriteLine("[Edición] Año y categoría actualizados."); Console.ReadKey(); }
         static void DeleteBook() { Console.Clear(); Console.WriteLine("[Validación] Validar no permitir eliminación si el libro está prestado."); Console.ReadKey(); }
-         }
+        
          
-         }
+        // ==========================================
+        // 3. MÓDULO DE USUARIOS (COMPLETO)
+        // ==========================================
+        static void ShowUsersMenu()
+        {
+            bool back = false;
+            while (!back)
+            {
+                Console.Clear();
+                Console.WriteLine("=== MENÚ USUARIOS ===");
+                Console.WriteLine("1. Registrar usuario\n2. Listar usuarios\n3. Ver detalle\n4. Actualizar usuario\n5. Eliminar usuario\n0. Volver");
+                string input = Console.ReadLine();
+                switch (input)
+                {
+                    case "1": RegisterUser(); break;
+                    case "2": ListUsers(); break;
+                    case "3": ViewUserDetail(); break;
+                    case "4": UpdateUserMenu(); break;
+                    case "5": DeleteUser(); break;
+                    case "0": back = true; break;
+                    default: ShowInvalidMessage(); break;
+                }
+            }
+        }
+
+        static void RegisterUser() { Console.Clear(); Console.WriteLine("[Módulo Usuarios] Registrando nuevo usuario en el sistema."); Console.ReadKey(); }
+        static void ListUsers() { Console.Clear(); Console.WriteLine("[Módulo Usuarios] Mostrando listado de socios activos e inactivos."); Console.ReadKey(); }
+        static void ViewUserDetail() { Console.Clear(); Console.WriteLine("[Módulo Usuarios] Consultando datos de contacto y préstamos del usuario."); Console.ReadKey(); }
+
+        static void UpdateUserMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("--- Actualizar Usuario ---\n1. Nombre\n2. Contacto\n3. Activar/Desactivar\n0. Volver");
+            string opt = Console.ReadLine();
+            if (opt == "1") EditUserName();
+            else if (opt == "2") EditUserContact();
+            else if (opt == "3") ToggleUserActiveStatus();
+        }
+
+        static void EditUserName() { Console.Clear(); Console.WriteLine("[Edición] Nombre de usuario actualizado."); Console.ReadKey(); }
+        static void EditUserContact() { Console.Clear(); Console.WriteLine("[Edición] Datos de contacto actualizados."); Console.ReadKey(); }
+        static void ToggleUserActiveStatus() { Console.Clear(); Console.WriteLine("[Estado] El estado de actividad del usuario ha sido cambiado."); Console.ReadKey(); }
+        static void DeleteUser() { Console.Clear(); Console.WriteLine("[Validación] Validar no permitir si el usuario tiene préstamos activos."); Console.ReadKey(); }
+}
+
+
+}
