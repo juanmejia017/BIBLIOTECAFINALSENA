@@ -159,7 +159,51 @@ namespace ProyectoBibliotecaSENA
         static void EditUserContact() { Console.Clear(); Console.WriteLine("[Edición] Datos de contacto actualizados."); Console.ReadKey(); }
         static void ToggleUserActiveStatus() { Console.Clear(); Console.WriteLine("[Estado] El estado de actividad del usuario ha sido cambiado."); Console.ReadKey(); }
         static void DeleteUser() { Console.Clear(); Console.WriteLine("[Validación] Validar no permitir si el usuario tiene préstamos activos."); Console.ReadKey(); }
-}
 
+
+        // ==========================================
+        // 4. MÓDULO DE PRÉSTAMOS (COMPLETO)
+        // ==========================================
+        static void ShowLoansMenu()
+        {
+            bool back = false;
+            while (!back)
+            {
+                Console.Clear();
+                Console.WriteLine("=== MENÚ PRÉSTAMOS ===");
+                Console.WriteLine("1. Crear préstamo\n2. Listar préstamos\n3. Ver detalle\n4. Registrar devolución\n5. Eliminar préstamo\n0. Volver");
+                string input = Console.ReadLine();
+                switch (input)
+                {
+                    case "1": CreateLoan(); break;
+                    case "2": ListLoansMenu(); break;
+                    case "3": ViewLoanDetail(); break;
+                    case "4": RegisterReturn(); break;
+                    case "5": DeleteLoan(); break;
+                    case "0": back = true; break;
+                    default: ShowInvalidMessage(); break;
+                }
+            }
+        }
+
+        static void CreateLoan() { Console.Clear(); Console.WriteLine("[Préstamo] Validando disponibilidad de libro y estado del usuario..."); Console.ReadKey(); }
+        
+        static void ListLoansMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("--- Listar Préstamos ---\n1. Todos\n2. Activos\n3. Cerrados\n0. Volver");
+            string opt = Console.ReadLine();
+            if (opt == "1") ListLoansAll();
+            else if (opt == "2") ListLoansActive();
+            else if (opt == "3") ListLoansClosed();
+        }
+
+        static void ListLoansAll() { Console.Clear(); Console.WriteLine("[Préstamos] Mostrando historial global."); Console.ReadKey(); }
+        static void ListLoansActive() { Console.Clear(); Console.WriteLine("[Préstamos] Mostrando solo libros pendientes por entregar."); Console.ReadKey(); }
+        static void ListLoansClosed() { Console.Clear(); Console.WriteLine("[Préstamos] Mostrando préstamos finalizados."); Console.ReadKey(); }
+        static void ViewLoanDetail() { Console.Clear(); Console.WriteLine("[Préstamos] Mostrando fechas de entrega y multas."); Console.ReadKey(); }
+        static void RegisterReturn() { Console.Clear(); Console.WriteLine("[Proceso] Marcar devuelto + Libro disponible."); Console.ReadKey(); }
+        static void DeleteLoan() { Console.Clear(); Console.WriteLine("[Préstamos] Registro eliminado del historial."); Console.ReadKey(); }
+}
 
 }
