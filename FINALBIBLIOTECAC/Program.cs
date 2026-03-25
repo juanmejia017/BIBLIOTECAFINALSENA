@@ -36,7 +36,7 @@ namespace ProyectoBibliotecaSENA
                 Console.WriteLine("6. Salir");
                 Console.Write("\nSeleccione una opción: ");
 
-                string input = Console.ReadLine();
+                string? input = Console.ReadLine();
 
                 switch (input)
                 {
@@ -68,7 +68,7 @@ namespace ProyectoBibliotecaSENA
                 Console.WriteLine("0. Volver al menú principal");
                 Console.Write("\nSeleccione una opción: ");
 
-                string input = Console.ReadLine();
+                string? input = Console.ReadLine();
                 switch (input)
                 {
                     case "1": RegisterBook(); break;
@@ -89,7 +89,7 @@ namespace ProyectoBibliotecaSENA
             Console.Clear();
             Console.WriteLine("--- Submenú: Listar Libros ---");
             Console.WriteLine("1. Listar todos\n2. Listar disponibles\n3. Listar prestados\n0. Volver");
-            string opt = Console.ReadLine();
+            string? opt = Console.ReadLine();
             if (opt == "1") ListBooksAll();
             else if (opt == "2") ListBooksAvailable();
             else if (opt == "3") ListBooksBorrowed();
@@ -104,7 +104,7 @@ namespace ProyectoBibliotecaSENA
         {
             Console.Clear();
             Console.WriteLine("--- Actualizar Libro ---\n1. Título\n2. Autor\n3. Año/Categoría\n0. Volver");
-            string opt = Console.ReadLine();
+            string? opt = Console.ReadLine();
             if (opt == "1") EditBookTitle();
             else if (opt == "2") EditBookAuthor();
             else if (opt == "3") EditBookYearCategory();
@@ -127,7 +127,7 @@ namespace ProyectoBibliotecaSENA
                 Console.Clear();
                 Console.WriteLine("=== MENÚ USUARIOS ===");
                 Console.WriteLine("1. Registrar usuario\n2. Listar usuarios\n3. Ver detalle\n4. Actualizar usuario\n5. Eliminar usuario\n0. Volver");
-                string input = Console.ReadLine();
+                string? input = Console.ReadLine();
                 switch (input)
                 {
                     case "1": RegisterUser(); break;
@@ -149,7 +149,7 @@ namespace ProyectoBibliotecaSENA
         {
             Console.Clear();
             Console.WriteLine("--- Actualizar Usuario ---\n1. Nombre\n2. Contacto\n3. Activar/Desactivar\n0. Volver");
-            string opt = Console.ReadLine();
+            string? opt = Console.ReadLine();
             if (opt == "1") EditUserName();
             else if (opt == "2") EditUserContact();
             else if (opt == "3") ToggleUserActiveStatus();
@@ -172,7 +172,7 @@ namespace ProyectoBibliotecaSENA
                 Console.Clear();
                 Console.WriteLine("=== MENÚ PRÉSTAMOS ===");
                 Console.WriteLine("1. Crear préstamo\n2. Listar préstamos\n3. Ver detalle\n4. Registrar devolución\n5. Eliminar préstamo\n0. Volver");
-                string input = Console.ReadLine();
+                string? input = Console.ReadLine();
                 switch (input)
                 {
                     case "1": CreateLoan(); break;
@@ -192,7 +192,7 @@ namespace ProyectoBibliotecaSENA
         {
             Console.Clear();
             Console.WriteLine("--- Listar Préstamos ---\n1. Todos\n2. Activos\n3. Cerrados\n0. Volver");
-            string opt = Console.ReadLine();
+            string? opt = Console.ReadLine();
             if (opt == "1") ListLoansAll();
             else if (opt == "2") ListLoansActive();
             else if (opt == "3") ListLoansClosed();
@@ -217,7 +217,7 @@ namespace ProyectoBibliotecaSENA
                 Console.Clear();
                 Console.WriteLine("=== BÚSQUEDAS Y REPORTES ===");
                 Console.WriteLine("1. Buscar libro\n2. Buscar usuario\n3. Reportes\n0. Volver");
-                string input = Console.ReadLine();
+                string? input = Console.ReadLine();
                 switch (input)
                 {
                     case "1": SearchBook(); break;
@@ -236,7 +236,7 @@ namespace ProyectoBibliotecaSENA
         {
             Console.Clear();
             Console.WriteLine("--- Reportes ---\n1. Por usuario\n2. Por libro\n3. Vencidos\n4. Resumen\n0. Volver");
-            string opt = Console.ReadLine();
+            string? opt = Console.ReadLine();
             switch (opt)
             {
                 case "1": ReportByUser(); break;
@@ -259,7 +259,7 @@ namespace ProyectoBibliotecaSENA
         {
             Console.Clear();
             Console.WriteLine("=== GUARDAR / CARGAR DATOS ===\n1. Guardar\n2. Cargar\n3. Reiniciar\n0. Volver");
-            string opt = Console.ReadLine();
+            string? opt = Console.ReadLine();
             if (opt == "1") SaveData();
             else if (opt == "2") LoadData();
             else if (opt == "3") ConfirmResetData();
@@ -272,7 +272,7 @@ namespace ProyectoBibliotecaSENA
         {
             Console.Clear();
             Console.Write("¿Seguro que desea reiniciar todo? (S/N): ");
-            if (Console.ReadLine().ToUpper() == "S") Console.WriteLine("Datos reiniciados.");
+           if ((Console.ReadLine() ?? "").ToUpper() == "S") Console.WriteLine("Datos reiniciados.");
             Console.ReadKey();
         }
 
@@ -280,7 +280,7 @@ static bool ConfirmExitAndSave()
         {
             Console.Clear();
             Console.Write("¿Desea guardar antes de salir? (S/N): ");
-            string resp = Console.ReadLine().ToUpper();
+            string resp = (Console.ReadLine() ?? "").ToUpper();
             if (resp == "S") SaveData();
             return true;
         }
