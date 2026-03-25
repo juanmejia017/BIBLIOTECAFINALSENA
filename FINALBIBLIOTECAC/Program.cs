@@ -251,6 +251,33 @@ namespace ProyectoBibliotecaSENA
         static void ReportOverdue() { Console.Clear(); Console.WriteLine("[Reporte] Generando lista de morosos..."); Console.ReadKey(); }
         static void ReportSummary() { Console.Clear(); Console.WriteLine("[Reporte] Generando resumen estadístico general."); Console.ReadKey(); }
 
+
+// ==========================================
+        // 6. PERSISTENCIA 
+        // ==========================================
+        static void ShowPersistenceMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("=== GUARDAR / CARGAR DATOS ===\n1. Guardar\n2. Cargar\n3. Reiniciar\n0. Volver");
+            string opt = Console.ReadLine();
+            if (opt == "1") SaveData();
+            else if (opt == "2") LoadData();
+            else if (opt == "3") ConfirmResetData();
+        }
+
+        static void SaveData() { Console.Clear(); Console.WriteLine("[Persistencia] Datos guardados en el almacenamiento local."); Console.ReadKey(); }
+        static void LoadData() { Console.Clear(); Console.WriteLine("[Persistencia] Datos cargados exitosamente."); Console.ReadKey(); }
+        
+        static void ConfirmResetData()
+        {
+            Console.Clear();
+            Console.Write("¿Seguro que desea reiniciar todo? (S/N): ");
+            if (Console.ReadLine().ToUpper() == "S") Console.WriteLine("Datos reiniciados.");
+            Console.ReadKey();
+        }
+
+
 }
+
 
 }
