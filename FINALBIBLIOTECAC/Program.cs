@@ -1,4 +1,5 @@
 ﻿using System;
+using ProyectoBibliotecaSENA.Models;
 
 namespace ProyectoBibliotecaSENA
 {
@@ -95,7 +96,19 @@ namespace ProyectoBibliotecaSENA
             else if (opt == "3") ListBooksBorrowed();
         }
 
-        static void ListBooksAll() { Console.Clear(); Console.WriteLine("[Módulo Libros] Mostrando catálogo completo de la biblioteca."); Console.ReadKey(); }
+        static void ListBooksAll()
+{
+    Console.Clear();
+    // Creamos 2 objetos de prueba de la clase Libro
+    Libro l1 = new Libro(1, "Cien años de soledad", "Gabriel García Márquez", 1967);
+    Libro l2 = new Libro(2, "El resplandor", "Stephen King", 1977);
+    
+    Console.WriteLine("--- PRUEBA DE OBJETOS: LIBROS ---");
+    Console.WriteLine(l1.DetalleCompleto());
+    Console.WriteLine(l2.DetalleCompleto());
+    Console.WriteLine("\nResumen: " + l1.ResumenCorto());
+    Console.ReadKey();
+}
         static void ListBooksAvailable() { Console.Clear(); Console.WriteLine("[Módulo Libros] Mostrando libros con estado: DISPONIBLE."); Console.ReadKey(); }
         static void ListBooksBorrowed() { Console.Clear(); Console.WriteLine("[Módulo Libros] Mostrando libros con estado: PRESTADO."); Console.ReadKey(); }
         static void ViewBookDetail() { Console.Clear(); Console.WriteLine("[Módulo Libros] Consultando ficha técnica del ejemplar seleccionado."); Console.ReadKey(); }
@@ -142,7 +155,18 @@ namespace ProyectoBibliotecaSENA
         }
 
         static void RegisterUser() { Console.Clear(); Console.WriteLine("[Módulo Usuarios] Registrando nuevo usuario en el sistema."); Console.ReadKey(); }
-        static void ListUsers() { Console.Clear(); Console.WriteLine("[Módulo Usuarios] Mostrando listado de socios activos e inactivos."); Console.ReadKey(); }
+        static void ListUsers()
+{
+    Console.Clear();
+    // Creamos 2 objetos de prueba de la clase Usuario
+    Usuario u1 = new Usuario(1, "Carlos Mejia", "101010");
+    Usuario u2 = new Usuario(2, "Sara", "202020");
+
+    Console.WriteLine("--- PRUEBA DE OBJETOS: USUARIOS ---");
+    Console.WriteLine(u1.DetalleCompleto());
+    Console.WriteLine(u2.DetalleCompleto());
+    Console.ReadKey();
+}
         static void ViewUserDetail() { Console.Clear(); Console.WriteLine("[Módulo Usuarios] Consultando datos de contacto y préstamos del usuario."); Console.ReadKey(); }
 
         static void UpdateUserMenu()
@@ -198,7 +222,22 @@ namespace ProyectoBibliotecaSENA
             else if (opt == "3") ListLoansClosed();
         }
 
-        static void ListLoansAll() { Console.Clear(); Console.WriteLine("[Préstamos] Mostrando historial global."); Console.ReadKey(); }
+        static void ListLoansAll()
+{
+    Console.Clear();
+    // Creamos objetos para armar el préstamo
+    Libro l1 = new Libro(10, "C# Avanzado", "SENA", 2026);
+    Usuario u1 = new Usuario(5, "Carlos", "1010");
+    
+    // Creamos el objeto Préstamo usando el libro y el usuario anteriores
+    Prestamo p1 = new Prestamo(501, l1, u1);
+
+    Console.WriteLine("--- PRUEBA DE OBJETOS: PRÉSTAMO ---");
+    Console.WriteLine(p1.DetalleCompleto());
+    Console.WriteLine($"\n¿Está vencido?: {(p1.EstaVencido() ? "SÍ" : "NO")}");
+    Console.WriteLine($"Días desde el préstamo: {p1.DiasTranscurridos()}");
+    Console.ReadKey();
+}
         static void ListLoansActive() { Console.Clear(); Console.WriteLine("[Préstamos] Mostrando solo libros pendientes por entregar."); Console.ReadKey(); }
         static void ListLoansClosed() { Console.Clear(); Console.WriteLine("[Préstamos] Mostrando préstamos finalizados."); Console.ReadKey(); }
         static void ViewLoanDetail() { Console.Clear(); Console.WriteLine("[Préstamos] Mostrando fechas de entrega y multas."); Console.ReadKey(); }
