@@ -204,6 +204,53 @@ namespace ProyectoBibliotecaSENA
         static void ViewLoanDetail() { Console.Clear(); Console.WriteLine("[Préstamos] Mostrando fechas de entrega y multas."); Console.ReadKey(); }
         static void RegisterReturn() { Console.Clear(); Console.WriteLine("[Proceso] Marcar devuelto + Libro disponible."); Console.ReadKey(); }
         static void DeleteLoan() { Console.Clear(); Console.WriteLine("[Préstamos] Registro eliminado del historial."); Console.ReadKey(); }
+
+
+ // ==========================================
+        // 5. BÚSQUEDAS Y REPORTES
+        // ==========================================
+        static void ShowSearchReportsMenu()
+        {
+            bool back = false;
+            while (!back)
+            {
+                Console.Clear();
+                Console.WriteLine("=== BÚSQUEDAS Y REPORTES ===");
+                Console.WriteLine("1. Buscar libro\n2. Buscar usuario\n3. Reportes\n0. Volver");
+                string input = Console.ReadLine();
+                switch (input)
+                {
+                    case "1": SearchBook(); break;
+                    case "2": SearchUser(); break;
+                    case "3": ReportsMenu(); break;
+                    case "0": back = true; break;
+                    default: ShowInvalidMessage(); break;
+                }
+            }
+        }
+
+        static void SearchBook() { Console.Clear(); Console.WriteLine("[Búsqueda] Filtrando por título/autor/id/categoría..."); Console.ReadKey(); }
+        static void SearchUser() { Console.Clear(); Console.WriteLine("[Búsqueda] Filtrando por nombre/id..."); Console.ReadKey(); }
+        
+        static void ReportsMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("--- Reportes ---\n1. Por usuario\n2. Por libro\n3. Vencidos\n4. Resumen\n0. Volver");
+            string opt = Console.ReadLine();
+            switch (opt)
+            {
+                case "1": ReportByUser(); break;
+                case "2": ReportByBook(); break;
+                case "3": ReportOverdue(); break;
+                case "4": ReportSummary(); break;
+            }
+        }
+
+        static void ReportByUser() { Console.Clear(); Console.WriteLine("[Reporte] Generando actividad por socio..."); Console.ReadKey(); }
+        static void ReportByBook() { Console.Clear(); Console.WriteLine("[Reporte] Generando rotación de ejemplar..."); Console.ReadKey(); }
+        static void ReportOverdue() { Console.Clear(); Console.WriteLine("[Reporte] Generando lista de morosos..."); Console.ReadKey(); }
+        static void ReportSummary() { Console.Clear(); Console.WriteLine("[Reporte] Generando resumen estadístico general."); Console.ReadKey(); }
+
 }
 
 }
