@@ -276,8 +276,25 @@ namespace ProyectoBibliotecaSENA
             Console.ReadKey();
         }
 
+static bool ConfirmExitAndSave()
+        {
+            Console.Clear();
+            Console.Write("¿Desea guardar antes de salir? (S/N): ");
+            string resp = Console.ReadLine().ToUpper();
+            if (resp == "S") SaveData();
+            return true;
+        }
 
-}
+        // ==========================================
+        // UTILIDADES
+        // ==========================================
+        static void ShowInvalidMessage() 
+        { 
+            Console.WriteLine("\nOpción no válida. Presione una tecla para continuar..."); 
+            Console.ReadKey(); 
+        }
+    }
+    
+    }
 
 
-}
