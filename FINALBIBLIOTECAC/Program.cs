@@ -332,6 +332,21 @@ static bool ConfirmExitAndSave()
             Console.WriteLine("\nOpción no válida. Presione una tecla para continuar..."); 
             Console.ReadKey(); 
         }
+    
+    static void MostrarDiferenciaArrayVsList()
+{
+    Console.WriteLine("--- COMPARACIÓN ARRAY VS LIST ---");
+    // Array: Tamaño fijo
+    int[] arrayFijo = new int[2] { 1, 2 };
+    Console.WriteLine("Array: Tamaño fijo de 2 elementos. No se puede expandir.");
+
+    // List: Dinámica
+    List<int> listaDinamica = new List<int> { 1, 2 };
+    listaDinamica.Add(3); // Se expande automáticamente
+    Console.WriteLine("List: Dinámica. Agregamos un 3er elemento sin problemas.");
+    Console.WriteLine("Conclusión: List es mejor para sistemas donde no sabemos cuántos libros habrá.");
+}
+    
     }
     
     }
