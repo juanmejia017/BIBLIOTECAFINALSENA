@@ -1,10 +1,14 @@
 ﻿using System;
 using ProyectoBibliotecaSENA.Models;
+using ProyectoBibliotecaSENA.Services;
 
 namespace ProyectoBibliotecaSENA
 {
     class Program
     {
+static LibroService _libroService = new LibroService();
+static UsuarioService _usuarioService = new UsuarioService();
+static PrestamoService _prestamoService = new PrestamoService();
         static void Main(string[] args)
         {
             // Mensaje de bienvenida inicial
@@ -96,19 +100,38 @@ namespace ProyectoBibliotecaSENA
             else if (opt == "3") ListBooksBorrowed();
         }
 
-        static void ListBooksAll()
+ static void ListBooksAll()
 {
     Console.Clear();
-    // Creamos 2 objetos de prueba de la clase Libro
-    Libro l1 = new Libro(1, "Cien años de soledad", "Gabriel García Márquez", 1967);
-    Libro l2 = new Libro(2, "El resplandor", "Stephen King", 1977);
-    
-    Console.WriteLine("--- PRUEBA DE OBJETOS: LIBROS ---");
-    Console.WriteLine(l1.DetalleCompleto());
-    Console.WriteLine(l2.DetalleCompleto());
-    Console.WriteLine("\nResumen: " + l1.ResumenCorto());
+    Console.WriteLine("=== GESTIÓN DE LIBROS (Capa Services) ===");
+
+    // 1. Usamos el servicio para agregar datos (solo para la prueba)
+    _libroService.AgregarLibro(new Libro(1, "Cien años de soledad", "Gabriel García Márquez", 1967));
+    _libroService.AgregarLibro(new Libro(2, "El resplandor", "Stephen King", 1977));
+
+    // 2. Ordenamos por título (Requisito 5 de la guía)
+    _libroService.OrdenarPorTitulo();
+
+    // 3. Mostramos los libros usando la lista del servicio
+    Console.WriteLine("\n--- Lista de Libros Registrados ---");
+    foreach (var libro in _libroService.ObtenerTodos())
+    {
+        Console.WriteLine(libro.DetalleCompleto());
+    }
+
+    // 4. Mostramos KPIs (Requisito 6 de la guía)
+    Console.WriteLine("\n--- Estadísticas (KPIs) ---");
+    Console.WriteLine($"Total libros: {_libroService.TotalLibros()}");
+    Console.WriteLine($"Disponibles: {_libroService.LibrosDisponibles()}");
+
+    // 5. Ejemplo Comparativo (Requisito 7 de la guía)
+    Console.WriteLine("\n-------------------------------------------");
+    MostrarDiferenciaArrayVsList(); 
+
+    Console.WriteLine("\nPresione cualquier tecla para volver...");
     Console.ReadKey();
 }
+
         static void ListBooksAvailable() { Console.Clear(); Console.WriteLine("[Módulo Libros] Mostrando libros con estado: DISPONIBLE."); Console.ReadKey(); }
         static void ListBooksBorrowed() { Console.Clear(); Console.WriteLine("[Módulo Libros] Mostrando libros con estado: PRESTADO."); Console.ReadKey(); }
         static void ViewBookDetail() { Console.Clear(); Console.WriteLine("[Módulo Libros] Consultando ficha técnica del ejemplar seleccionado."); Console.ReadKey(); }
@@ -332,6 +355,21 @@ static bool ConfirmExitAndSave()
             Console.WriteLine("\nOpción no válida. Presione una tecla para continuar..."); 
             Console.ReadKey(); 
         }
+    
+    static void MostrarDiferenciaArrayVsList()
+{
+    Console.WriteLine("--- COMPARACIÓN ARRAY VS LIST ---");
+    // Array: Tamaño fijo
+    int[] arrayFijo = new int[2] { 1, 2 };
+    Console.WriteLine("Array: Tamaño fijo de 2 elementos. No se puede expandir.");
+
+    // List: Dinámica
+    List<int> listaDinamica = new List<int> { 1, 2 };
+    listaDinamica.Add(3); // Se expande automáticamente
+    Console.WriteLine("List: Dinámica. Agregamos un 3er elemento sin problemas.");
+    Console.WriteLine("Conclusión: List es mejor para sistemas donde no sabemos cuántos libros habrá.");
+}
+    
     }
     
     }
