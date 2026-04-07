@@ -348,7 +348,45 @@ static PrestamoService _prestamoService = new PrestamoService();
             }
         }
 
-        static void CreateLoan() { Console.Clear(); Console.WriteLine("[Préstamo] Validando disponibilidad de libro y estado del usuario..."); Console.ReadKey(); }
+        static void CreateLoan()
+{
+    Console.Clear();
+    Console.WriteLine("=== REGISTRAR NUEVO PRÉSTAMO ===");
+
+    // 1. Buscar Libro
+    Console.Write("Ingrese ID del Libro: ");
+    if (!int.TryParse(Console.ReadLine(), out int idLibro)) return;
+    var libro = _libroService.BuscarLibro(idLibro.ToString());
+
+    // 2. Buscar Usuario
+    Console.Write("Ingrese ID del Usuario: ");
+    if (!int.TryParse(Console.ReadLine(), out int idUsuario)) return;
+    var usuario = _usuarioService.BuscarUsuario(idUsuario.ToString());
+
+    // 3. Validar y Relacionar
+    if (libro == null) {
+        Console.WriteLine("❌ Error: El libro no existe.");
+    } else if (usuario == null) {
+        Console.WriteLine("❌ Error: El usuario no existe.");
+    } else if (!libro.Disponible) {
+        Console.WriteLine("❌ Error: El libro ya está prestado.");
+    } else {
+        // Crear la relación (Relacionamos los objetos completos)
+        int nuevoId = new Random().Next(1000, 9999);
+        Prestamo nuevo = new Prestamo(nuevoId, libro, usuario);
+        
+        // El constructor de Prestamo debería poner Disponible = false, 
+        // pero lo reforzamos aquí:
+        libro.Disponible = false;
+        
+        _prestamoService.RegistrarPrestamo(nuevo);
+        Console.WriteLine("\n✅ Préstamo realizado con éxito.");
+        Console.WriteLine($"Libro: {libro.Titulo} -> Entregado a: {usuario.Nombre}");
+    }
+
+    Console.WriteLine("\nPresione cualquier tecla para volver...");
+    Console.ReadKey();
+}
         
         static void ListLoansMenu()
         {
@@ -360,25 +398,43 @@ static PrestamoService _prestamoService = new PrestamoService();
             else if (opt == "3") ListLoansClosed();
         }
 
-        static void ListLoansAll()
+       static void ListLoansAll()
 {
     Console.Clear();
-    // Creamos objetos para armar el préstamo
-    Libro l1 = new Libro(10, "C# Avanzado", "SENA", 2026);
-    Usuario u1 = new Usuario(5, "Carlos", "1010");
+    Console.WriteLine("=== LISTADO DE PRÉSTAMOS ACTIVOS ===");
     
-    // Creamos el objeto Préstamo usando el libro y el usuario anteriores
-    Prestamo p1 = new Prestamo(501, l1, u1);
+    var lista = _prestamoService.ObtenerTodos();
 
-    Console.WriteLine("--- PRUEBA DE OBJETOS: PRÉSTAMO ---");
-    Console.WriteLine(p1.DetalleCompleto());
-    Console.WriteLine($"\n¿Está vencido?: {(p1.EstaVencido() ? "SÍ" : "NO")}");
-    Console.WriteLine($"Días desde el préstamo: {p1.DiasTranscurridos()}");
+    if (lista.Count == 0) {
+        Console.WriteLine("No hay préstamos registrados.");
+    } else {
+        foreach (var p in lista) {
+            // Aquí se muestra la ventaja de la relación:
+            // Accedemos a propiedades del libro y usuario desde el préstamo
+            Console.WriteLine($"ID: {p.Id} | Libro: {p.LibroPrestado.Titulo} | Usuario: {p.UsuarioReceptor.Nombre} | Fecha: {p.FechaPrestamo:dd/MM/yyyy}");
+        }
+    }
+    
+    Console.ReadKey();
+}
        
         static void ListLoansActive() { Console.Clear(); Console.WriteLine("[Préstamos] Mostrando solo libros pendientes por entregar."); Console.ReadKey(); }
         static void ListLoansClosed() { Console.Clear(); Console.WriteLine("[Préstamos] Mostrando préstamos finalizados."); Console.ReadKey(); }
         static void ViewLoanDetail() { Console.Clear(); Console.WriteLine("[Préstamos] Mostrando fechas de entrega y multas."); Console.ReadKey(); }
-        static void RegisterReturn() { Console.Clear(); Console.WriteLine("[Proceso] Marcar devuelto + Libro disponible."); Console.ReadKey(); }
+        static void RegisterReturn()
+{
+    Console.Clear();
+    Console.WriteLine("=== DEVOLUCIÓN DE LIBRO ===");
+    Console.Write("Ingrese el ID del préstamo: ");
+    
+    if (int.TryParse(Console.ReadLine(), out int id)) {
+        if (_prestamoService.FinalizarPrestamo(id))
+            Console.WriteLine("✅ Devolución exitosa. El libro ahora está DISPONIBLE.");
+        else
+            Console.WriteLine("❌ No se encontró el registro de préstamo.");
+    }
+    Console.ReadKey();
+}
         static void DeleteLoan() { Console.Clear(); Console.WriteLine("[Préstamos] Registro eliminado del historial."); Console.ReadKey(); }
 
 
