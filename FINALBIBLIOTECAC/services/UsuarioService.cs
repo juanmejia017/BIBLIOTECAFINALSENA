@@ -1,21 +1,46 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ProyectoBibliotecaSENA.Models;
 
-namespace ProyectoBibliotecaSENA
+namespace ProyectoBibliotecaSENA.Services
 {
     public class UsuarioService
-    { 
-        private List<Usuario> usuarios = new List<Usuario>();
-        public void AgregarUsuario(Usuario usuario) =>usuarios.Add(usuario);
-        public List<Usuario> ObtenerTodos()=>usuarios;
-        public Usuario ? BuscarDocumento(string doc)=> usuarios.Find(u =>u.Documento==doc);
-        public void OrdenarPorNombre()=>usuarios=usuarios.OrderBy(u=>u.Nombre).ToList();
+    {
+        private List<Usuario> _usuarios = new List<Usuario>();
 
-        //KPIS
-        public int TotalUsuarios()=>usuarios.Count;
-        public int UsuariosActivos ()=>usuarios.Count(u => u.Activo);
-        
+        // Agregar usuario
+        public void RegistrarUsuario(Usuario usuario)
+        {
+            _usuarios.Add(usuario);
+        }
 
+        // Obtener todos los usuarios
+        public List<Usuario> ObtenerTodos()
+        {
+            return _usuarios.OrderBy(u => u.Nombre).ToList();
+        }
+
+        // Buscar por ID o Nombre
+        public Usuario BuscarUsuario(string criterio)
+        {
+            return _usuarios.FirstOrDefault(u => 
+                u.Id.ToString() == criterio || 
+                u.Nombre.Contains(criterio, StringComparison.OrdinalIgnoreCase));
+        }
+
+        // Eliminar usuario (Validar si no tiene préstamos sería en la siguiente rama)
+        public bool EliminarUsuario(int id)
+        {
+            var usuario = _usuarios.FirstOrDefault(u => u.Id == id);
+            if (usuario != null)
+            {
+                _usuarios.Remove(usuario);
+                return true;
+            }
+            return false;
+        }
+
+        public int TotalUsuarios() => _usuarios.Count;
     }
 }
