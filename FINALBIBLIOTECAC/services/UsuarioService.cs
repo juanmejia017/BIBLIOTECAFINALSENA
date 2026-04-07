@@ -21,15 +21,17 @@ namespace ProyectoBibliotecaSENA.Services
             return _usuarios.OrderBy(u => u.Nombre).ToList();
         }
 
-        // Buscar por ID o Nombre
-        public Usuario BuscarUsuario(string criterio)
+        // 1. Corregido: '?' para permitir retorno nulo y protección en la búsqueda
+        public Usuario? BuscarUsuario(string criterio)
         {
+            if (string.IsNullOrEmpty(criterio)) return null;
+
             return _usuarios.FirstOrDefault(u => 
                 u.Id.ToString() == criterio || 
-                u.Nombre.Contains(criterio, StringComparison.OrdinalIgnoreCase));
+                (u.Nombre?.Contains(criterio, StringComparison.OrdinalIgnoreCase) ?? false));
         }
 
-        // Eliminar usuario (Validar si no tiene préstamos sería en la siguiente rama)
+        // Eliminar usuario
         public bool EliminarUsuario(int id)
         {
             var usuario = _usuarios.FirstOrDefault(u => u.Id == id);
