@@ -545,8 +545,7 @@ static bool ConfirmExitAndSave()
     }
 
 
-<<<<<<< HEAD
-=======
 
-}
->>>>>>> feature/users-menu
+
+
+
