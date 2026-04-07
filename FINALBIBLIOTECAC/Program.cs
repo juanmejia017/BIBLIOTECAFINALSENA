@@ -230,19 +230,7 @@ static PrestamoService _prestamoService = new PrestamoService();
         }
 
        
-        static void ListUsers()
-{
-    Console.Clear();
-    // Creamos 2 objetos de prueba de la clase Usuario
-    Usuario u1 = new Usuario(1, "Carlos Mejia", "101010");
-    Usuario u2 = new Usuario(2, "Sara", "202020");
-
-    Console.WriteLine("--- PRUEBA DE OBJETOS: USUARIOS ---");
-    Console.WriteLine(u1.DetalleCompleto());
-    Console.WriteLine(u2.DetalleCompleto());
-    Console.ReadKey();
-}
-        static void ViewUserDetail() { Console.Clear(); Console.WriteLine("[Módulo Usuarios] Consultando datos de contacto y préstamos del usuario."); Console.ReadKey(); }
+       
         static void RegisterUser()
 {
     Console.Clear();
