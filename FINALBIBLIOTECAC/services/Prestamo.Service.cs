@@ -17,8 +17,8 @@ namespace ProyectoBibliotecaSENA.Services
 
         public List<Prestamo> ObtenerTodos() => _prestamos;
 
-        // Buscar por ID del préstamo
-        public Prestamo BuscarPorId(int id)
+        // 1. Corregido: Agregado '?' para permitir retorno nulo
+        public Prestamo? BuscarPorId(int id)
         {
             return _prestamos.FirstOrDefault(p => p.Id == id);
         }
@@ -27,11 +27,13 @@ namespace ProyectoBibliotecaSENA.Services
         public bool FinalizarPrestamo(int id)
         {
             var prestamo = BuscarPorId(id);
-            if (prestamo != null)
+            
+            // 2. Corregido: Validación de nulo para el objeto préstamo y sus propiedades
+            if (prestamo != null && prestamo.LibroPrestado != null)
             {
                 // Importante: Liberar el libro relacionado
                 prestamo.LibroPrestado.Disponible = true;
-                _prestamos.Remove(prestamo); // Opcional: podrías marcarlo como 'Cerrado'
+                _prestamos.Remove(prestamo); 
                 return true;
             }
             return false;
