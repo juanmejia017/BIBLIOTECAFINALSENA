@@ -87,7 +87,35 @@ static PrestamoService _prestamoService = new PrestamoService();
             }
         }
 
-        static void RegisterBook() { Console.Clear(); Console.WriteLine("[Módulo Libros] Iniciando registro de nuevo ejemplar. Validando ISBN..."); Console.ReadKey(); }
+        static void RegisterBook()
+{
+    Console.Clear();
+    Console.WriteLine("=== REGISTRAR NUEVO LIBRO ===");
+    
+    try {
+        Console.Write("Ingrese ID (Numérico): ");
+        int id = int.Parse(Console.ReadLine() ?? "0");
+        
+        Console.Write("Título: ");
+        string titulo = Console.ReadLine() ?? "Sin Título";
+        
+        Console.Write("Autor: ");
+        string autor = Console.ReadLine() ?? "Anónimo";
+        
+        Console.Write("Año de publicación: ");
+        int anio = int.Parse(Console.ReadLine() ?? "0");
+
+        Libro nuevoLibro = new Libro(id, titulo, autor, anio);
+        _libroService.AgregarLibro(nuevoLibro);
+
+        Console.WriteLine("\n✅ Libro guardado exitosamente en la colección.");
+    }
+    catch (Exception) {
+        Console.WriteLine("\n❌ Error: Datos inválidos. El libro no se registró.");
+    }
+    Console.WriteLine("\nPresione cualquier tecla para volver...");
+    Console.ReadKey();
+}
         
         static void ListBooksMenu()
         {
@@ -100,41 +128,47 @@ static PrestamoService _prestamoService = new PrestamoService();
             else if (opt == "3") ListBooksBorrowed();
         }
 
- static void ListBooksAll()
+        static void ListBooksAll()
 {
     Console.Clear();
-    Console.WriteLine("=== GESTIÓN DE LIBROS (Capa Services) ===");
-
-    // 1. Usamos el servicio para agregar datos (solo para la prueba)
-    _libroService.AgregarLibro(new Libro(1, "Cien años de soledad", "Gabriel García Márquez", 1967));
-    _libroService.AgregarLibro(new Libro(2, "El resplandor", "Stephen King", 1977));
-
-    // 2. Ordenamos por título (Requisito 5 de la guía)
-    _libroService.OrdenarPorTitulo();
-
-    // 3. Mostramos los libros usando la lista del servicio
-    Console.WriteLine("\n--- Lista de Libros Registrados ---");
-    foreach (var libro in _libroService.ObtenerTodos())
-    {
-        Console.WriteLine(libro.DetalleCompleto());
+    Console.WriteLine("=== LISTADO DE LIBROS (Orden Alfabético) ===");
+    
+    var libros = _libroService.ObtenerTodos();
+    
+    if (libros.Count == 0) {
+        Console.WriteLine("La biblioteca está vacía actualmente.");
+    } else {
+        foreach (var libro in libros) {
+            Console.WriteLine(libro.DetalleCompleto());
+        }
     }
 
-    // 4. Mostramos KPIs (Requisito 6 de la guía)
-    Console.WriteLine("\n--- Estadísticas (KPIs) ---");
-    Console.WriteLine($"Total libros: {_libroService.TotalLibros()}");
-    Console.WriteLine($"Disponibles: {_libroService.LibrosDisponibles()}");
-
-    // 5. Ejemplo Comparativo (Requisito 7 de la guía)
-    Console.WriteLine("\n-------------------------------------------");
-    MostrarDiferenciaArrayVsList(); 
-
+    Console.WriteLine("\n--- RESUMEN ESTADÍSTICO ---");
+    Console.WriteLine($"Total en sistema: {_libroService.TotalLibros()}");
+    Console.WriteLine($"Disponibles para préstamo: {_libroService.LibrosDisponibles()}");
+    
     Console.WriteLine("\nPresione cualquier tecla para volver...");
     Console.ReadKey();
 }
-
         static void ListBooksAvailable() { Console.Clear(); Console.WriteLine("[Módulo Libros] Mostrando libros con estado: DISPONIBLE."); Console.ReadKey(); }
         static void ListBooksBorrowed() { Console.Clear(); Console.WriteLine("[Módulo Libros] Mostrando libros con estado: PRESTADO."); Console.ReadKey(); }
-        static void ViewBookDetail() { Console.Clear(); Console.WriteLine("[Módulo Libros] Consultando ficha técnica del ejemplar seleccionado."); Console.ReadKey(); }
+        static void ViewBookDetail()
+{
+    Console.Clear();
+    Console.WriteLine("=== CONSULTAR FICHA TÉCNICA ===");
+    Console.Write("Ingrese ID o Título a buscar: ");
+    string criterio = Console.ReadLine() ?? "";
+
+    var libro = _libroService.BuscarLibro(criterio);
+
+    if (libro != null) {
+        Console.WriteLine("\n--- RESULTADO ENCONTRADO ---");
+        Console.WriteLine(libro.DetalleCompleto());
+    } else {
+        Console.WriteLine("\n❌ No se encontró ningún libro con ese criterio.");
+    }
+    Console.ReadKey();
+}
 
         static void UpdateBookMenu()
         {
@@ -149,7 +183,24 @@ static PrestamoService _prestamoService = new PrestamoService();
         static void EditBookTitle() { Console.Clear(); Console.WriteLine("[Edición] El título ha sido modificado exitosamente."); Console.ReadKey(); }
         static void EditBookAuthor() { Console.Clear(); Console.WriteLine("[Edición] El autor ha sido modificado exitosamente."); Console.ReadKey(); }
         static void EditBookYearCategory() { Console.Clear(); Console.WriteLine("[Edición] Año y categoría actualizados."); Console.ReadKey(); }
-        static void DeleteBook() { Console.Clear(); Console.WriteLine("[Validación] Validar no permitir eliminación si el libro está prestado."); Console.ReadKey(); }
+        static void DeleteBook()
+{
+    Console.Clear();
+    Console.WriteLine("=== ELIMINAR REGISTRO DE LIBRO ===");
+    Console.Write("Ingrese el ID del libro que desea borrar: ");
+    
+    if (int.TryParse(Console.ReadLine(), out int id)) {
+        bool eliminado = _libroService.EliminarLibro(id);
+        if (eliminado)
+            Console.WriteLine("✅ Registro eliminado con éxito.");
+        else
+            Console.WriteLine("❌ No se pudo eliminar: El ID no existe o el libro está prestado.");
+    } else {
+        Console.WriteLine("❌ Entrada inválida. Debe ser un número.");
+    }
+    
+    Console.ReadKey();
+}
         
          
         // ==========================================
@@ -174,6 +225,7 @@ static PrestamoService _prestamoService = new PrestamoService();
                     case "0": back = true; break;
                     default: ShowInvalidMessage(); break;
                 }
+         
             }
         }
 
