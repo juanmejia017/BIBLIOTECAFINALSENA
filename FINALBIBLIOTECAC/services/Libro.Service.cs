@@ -1,26 +1,51 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq; 
 using ProyectoBibliotecaSENA.Models;
 
 namespace ProyectoBibliotecaSENA.Services
 {
     public class LibroService
     {
-        private List<Libro> libros = new List<Libro>();
+        private List<Libro> _libros = new List<Libro>();
 
-        public void AgregarLibro(Libro libro) => libros.Add(libro);
-        
-        public List<Libro> ObtenerTodos() => libros;
+        // Agregar un nuevo objeto a la lista
+        public void AgregarLibro(Libro libro)
+        {
+            _libros.Add(libro);
+        }
 
-        public Libro? BuscarPorTitulo(string titulo) => 
-            libros.FirstOrDefault(l => l.Titulo!.Contains(titulo, StringComparison.OrdinalIgnoreCase));
+        // Obtener todos ordenados por título (Requisito Guía)
+        public List<Libro> ObtenerTodos()
+        {
+            return _libros.OrderBy(l => l.Titulo).ToList();
+        }
 
-        public void OrdenarPorTitulo() => libros = libros.OrderBy(l => l.Titulo).ToList();
+        // Buscar por ID o por Título
+        public Libro BuscarLibro(string criterio)
+        {
+            return _libros.FirstOrDefault(l => 
+                l.Id.ToString() == criterio || 
+                l.Titulo.Contains(criterio, StringComparison.OrdinalIgnoreCase));
+        }
 
-        // KPIs
-        public int TotalLibros() => libros.Count;
-        public int LibrosDisponibles() => libros.Count(l => l.Disponible);
-        public int LibrosPrestados() => libros.Count(l => !l.Disponible);
+        // Eliminar con validación de estado
+        public bool EliminarLibro(int id)
+        {
+            var libro = _libros.FirstOrDefault(l => l.Id == id);
+            if (libro != null)
+            {
+                if (libro.Disponible) 
+                {
+                    _libros.Remove(libro);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Métodos para KPIs (Estadísticas)
+        public int TotalLibros() => _libros.Count;
+        public int LibrosDisponibles() => _libros.Count(l => l.Disponible);
     }
 }
