@@ -243,6 +243,68 @@ static PrestamoService _prestamoService = new PrestamoService();
     Console.ReadKey();
 }
         static void ViewUserDetail() { Console.Clear(); Console.WriteLine("[Módulo Usuarios] Consultando datos de contacto y préstamos del usuario."); Console.ReadKey(); }
+        static void RegisterUser()
+{
+    Console.Clear();
+    Console.WriteLine("=== REGISTRAR NUEVO USUARIO ===");
+    
+    try {
+        Console.Write("ID de Usuario: ");
+        int id = int.Parse(Console.ReadLine() ?? "0");
+        
+        Console.Write("Nombre Completo: ");
+        string nombre = Console.ReadLine() ?? "Sin Nombre";
+        
+        Console.Write("Número de Contacto/Documento: ");
+        string contacto = Console.ReadLine() ?? "000";
+
+        Usuario nuevo = new Usuario(id, nombre, contacto);
+        _usuarioService.RegistrarUsuario(nuevo);
+
+        Console.WriteLine("\n✅ Usuario registrado correctamente en el sistema.");
+    }
+    catch (Exception) {
+        Console.WriteLine("\n❌ Error: Entrada de datos no válida.");
+    }
+    Console.WriteLine("\nPresione cualquier tecla para continuar...");
+    Console.ReadKey();
+}
+        static void ListUsers()
+{
+    Console.Clear();
+    Console.WriteLine("=== LISTA DE USUARIOS REGISTRADOS ===");
+    
+    var lista = _usuarioService.ObtenerTodos();
+
+    if (lista.Count == 0) {
+        Console.WriteLine("No hay usuarios registrados en el sistema.");
+    } else {
+        foreach (var usuario in lista) {
+            Console.WriteLine(usuario.DetalleCompleto());
+        }
+    }
+    
+    Console.WriteLine($"\nTotal de socios: {_usuarioService.TotalUsuarios()}");
+    Console.WriteLine("\nPresione cualquier tecla para volver...");
+    Console.ReadKey();
+}
+        static void ViewUserDetail()
+{
+    Console.Clear();
+    Console.WriteLine("=== BUSCAR USUARIO ===");
+    Console.Write("Ingrese ID o Nombre: ");
+    string criterio = Console.ReadLine() ?? "";
+
+    var usuario = _usuarioService.BuscarUsuario(criterio);
+
+    if (usuario != null) {
+        Console.WriteLine("\n--- DATOS DEL USUARIO ---");
+        Console.WriteLine(usuario.DetalleCompleto());
+    } else {
+        Console.WriteLine("\n❌ Usuario no encontrado.");
+    }
+    Console.ReadKey();
+}
 
         static void UpdateUserMenu()
         {
@@ -257,7 +319,20 @@ static PrestamoService _prestamoService = new PrestamoService();
         static void EditUserName() { Console.Clear(); Console.WriteLine("[Edición] Nombre de usuario actualizado."); Console.ReadKey(); }
         static void EditUserContact() { Console.Clear(); Console.WriteLine("[Edición] Datos de contacto actualizados."); Console.ReadKey(); }
         static void ToggleUserActiveStatus() { Console.Clear(); Console.WriteLine("[Estado] El estado de actividad del usuario ha sido cambiado."); Console.ReadKey(); }
-        static void DeleteUser() { Console.Clear(); Console.WriteLine("[Validación] Validar no permitir si el usuario tiene préstamos activos."); Console.ReadKey(); }
+        static void DeleteUser()
+{
+    Console.Clear();
+    Console.WriteLine("=== ELIMINAR USUARIO ===");
+    Console.Write("Ingrese el ID del usuario a dar de baja: ");
+    
+    if (int.TryParse(Console.ReadLine(), out int id)) {
+        if (_usuarioService.EliminarUsuario(id))
+            Console.WriteLine("✅ Usuario eliminado exitosamente.");
+        else
+            Console.WriteLine("❌ No se encontró el ID especificado.");
+    }
+    Console.ReadKey();
+}
 
 
         // ==========================================
@@ -311,8 +386,7 @@ static PrestamoService _prestamoService = new PrestamoService();
     Console.WriteLine(p1.DetalleCompleto());
     Console.WriteLine($"\n¿Está vencido?: {(p1.EstaVencido() ? "SÍ" : "NO")}");
     Console.WriteLine($"Días desde el préstamo: {p1.DiasTranscurridos()}");
-    Console.ReadKey();
-}
+       
         static void ListLoansActive() { Console.Clear(); Console.WriteLine("[Préstamos] Mostrando solo libros pendientes por entregar."); Console.ReadKey(); }
         static void ListLoansClosed() { Console.Clear(); Console.WriteLine("[Préstamos] Mostrando préstamos finalizados."); Console.ReadKey(); }
         static void ViewLoanDetail() { Console.Clear(); Console.WriteLine("[Préstamos] Mostrando fechas de entrega y multas."); Console.ReadKey(); }
@@ -427,3 +501,8 @@ static bool ConfirmExitAndSave()
     }
 
 
+<<<<<<< HEAD
+=======
+
+}
+>>>>>>> feature/users-menu
