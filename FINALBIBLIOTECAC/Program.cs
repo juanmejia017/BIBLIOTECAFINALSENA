@@ -229,7 +229,7 @@ static PrestamoService _prestamoService = new PrestamoService();
             }
         }
 
-        static void RegisterUser() { Console.Clear(); Console.WriteLine("[Módulo Usuarios] Registrando nuevo usuario en el sistema."); Console.ReadKey(); }
+       
         static void ListUsers()
 {
     Console.Clear();
